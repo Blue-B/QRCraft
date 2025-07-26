@@ -24,7 +24,8 @@ QRCraft automatically fetches website favicons and embeds them as logos in the c
 
 ![QRCraft Demo](./demo.png)
 
-*Try it live: [Your Demo URL Here]*
+
+**Try it live: [https://github.com/Blue-B]**
 
 ## Tech Stack
 
