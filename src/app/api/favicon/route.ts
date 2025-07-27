@@ -13,19 +13,19 @@ export async function GET(request: NextRequest) {
     let faviconUrls = [];
     
     if (domainUrl.includes('youtube.com') || domainUrl.includes('youtu.be')) {
-      // 유튜브 고해상도 SVG 로고 직접 생성
-      const youtubeSvg = `
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="64" height="64" rx="12" fill="#FF0000"/>
-          <path d="M26 20L42 32L26 44V20Z" fill="white"/>
-        </svg>
-      `;
+      // 유튜브 고해상도 SVG 로고 직접 생성 (256x256 고해상도)
+      const youtubeSvg = `<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="256" height="256" rx="48" fill="#FF0000"/>
+        <path d="M104 80L168 128L104 176V80Z" fill="white"/>
+      </svg>`;
       
       return new NextResponse(youtubeSvg, {
         headers: {
           'Content-Type': 'image/svg+xml',
-          'x-logo-source': 'youtube-svg-custom',
-          'Cache-Control': 'public, max-age=3600'
+          'x-logo-source': 'youtube-svg-hd',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
         }
       });
     } else if (domainUrl.includes('github.com')) {
