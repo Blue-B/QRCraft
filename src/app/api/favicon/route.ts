@@ -45,21 +45,13 @@ export async function GET(request: NextRequest) {
         }
       });
     } else if (domainUrl.includes('netflix.com')) {
-      // 넷플릭스 고해상도 SVG 로고 직접 생성
-      const netflixSvg = `<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="256" height="256" rx="48" fill="#E50914"/>
-        <path d="M75 60L75 196L95 196L95 120L135 196L155 196L155 60L135 60L135 140L95 60L75 60Z" fill="white"/>
-      </svg>`;
-      
-      return new NextResponse(netflixSvg, {
-        headers: {
-          'Content-Type': 'image/svg+xml',
-          'x-logo-source': 'netflix-svg-hd',
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0'
-        }
-      });
+      // 넷플릭스 오리지널 고해상도 로고
+      faviconUrls = [
+        `https://www.google.com/s2/favicons?domain=netflix.com&sz=256`, // 256x256 고해상도
+        `https://www.google.com/s2/favicons?domain=netflix.com&sz=128`, // 128x128 중간 해상도
+        `https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2023.ico`, // 넷플릭스 공식 아이콘
+        `https://netflix.com/favicon.ico`,
+      ];
     } else if (domainUrl.includes('google.com')) {
       // Google 고해상도 로고
       faviconUrls = [
