@@ -9,13 +9,39 @@ export async function GET(request: NextRequest) {
   }
   
   try {
-    // 도메인에서 favicon 가져오기 시도
-    const faviconUrls = [
-      `https://${domainUrl}/favicon.ico`,
-      `https://${domainUrl}/favicon.png`,
-      `https://${domainUrl}/apple-touch-icon.png`,
-      `https://www.google.com/s2/favicons?domain=${domainUrl}&sz=64`,
-    ];
+    // 특정 도메인에 대한 고해상도 로고 처리
+    let faviconUrls = [];
+    
+    if (domainUrl.includes('youtube.com') || domainUrl.includes('youtu.be')) {
+      // 유튜브 고해상도 로고
+      faviconUrls = [
+        `https://www.google.com/s2/favicons?domain=youtube.com&sz=128`,
+        `https://www.google.com/s2/favicons?domain=youtube.com&sz=64`,
+        `https://youtube.com/favicon.ico`,
+      ];
+    } else if (domainUrl.includes('github.com')) {
+      // GitHub 고해상도 로고
+      faviconUrls = [
+        `https://www.google.com/s2/favicons?domain=github.com&sz=128`,
+        `https://github.com/favicon.ico`,
+        `https://github.com/apple-touch-icon.png`,
+      ];
+    } else if (domainUrl.includes('google.com')) {
+      // Google 고해상도 로고
+      faviconUrls = [
+        `https://www.google.com/s2/favicons?domain=google.com&sz=128`,
+        `https://google.com/favicon.ico`,
+      ];
+    } else {
+      // 일반 도메인
+      faviconUrls = [
+        `https://www.google.com/s2/favicons?domain=${domainUrl}&sz=128`,
+        `https://www.google.com/s2/favicons?domain=${domainUrl}&sz=64`,
+        `https://${domainUrl}/favicon.ico`,
+        `https://${domainUrl}/favicon.png`,
+        `https://${domainUrl}/apple-touch-icon.png`,
+      ];
+    }
     
     for (const faviconUrl of faviconUrls) {
       try {

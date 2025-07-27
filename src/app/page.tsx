@@ -616,14 +616,14 @@ export default function Home() {
                             transform: 'translate(-50%, -50%)',
                             width: 256 * logoSize, // 로고 크기에 따라 조정
                             height: 256 * logoSize, // 로고 크기에 따라 조정
-                            background: 'white',
+                            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
                             borderRadius: '50%',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            padding: '12px', // 8px에서 12px로 증가
-                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                            border: '2px solid rgba(0,0,0,0.05)', // 테두리 추가
+                            padding: '8px', // 패딩 최적화
+                            boxShadow: '0 4px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)',
+                            border: '2px solid rgba(0,0,0,0.08)', // 테두리 조정
                           }}
                         >
                           {favicon.isSvg ? (
@@ -645,10 +645,11 @@ export default function Home() {
                               src={favicon.data}
                               alt="Logo"
                               fill
+                              unoptimized
                               style={{ 
                                 objectFit: 'contain',
                                 imageRendering: 'auto',
-                                filter: 'contrast(1.2) brightness(1.1) saturate(1.1)',
+                                filter: 'contrast(1.3) brightness(1.15) saturate(1.2) sharpen(1)',
                                 maxWidth: '100%',
                                 maxHeight: '100%',
                               }}
