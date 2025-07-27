@@ -624,7 +624,7 @@ export default function Home() {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            padding: '8px', // 패딩 최적화
+                            padding: '16px', // 파비콘은 여백을 두고 깔끔하게
                             boxShadow: '0 4px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)',
                             border: '2px solid rgba(0,0,0,0.08)', // 테두리 조정
                           }}
@@ -632,14 +632,12 @@ export default function Home() {
                           {favicon.isSvg ? (
                             <div
                               style={{ 
-                                width: '100%', 
-                                height: '100%',
+                                width: '70%', // 파비콘 SVG는 70%로 제한
+                                height: '70%',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 color: '#000000',
-                                maxWidth: '90%', // 최대 너비 제한
-                                maxHeight: '90%', // 최대 높이 제한
                               }}
                               dangerouslySetInnerHTML={{ __html: favicon.data }}
                             />
@@ -647,14 +645,13 @@ export default function Home() {
                             <Image
                               src={favicon.data}
                               alt="Logo"
-                              fill
+                              width={Math.round(256 * logoSize * 0.6)} // 파비콘 이미지는 60%로 제한
+                              height={Math.round(256 * logoSize * 0.6)}
                               unoptimized
                               style={{ 
                                 objectFit: 'contain',
                                 imageRendering: 'auto',
                                 filter: 'contrast(1.3) brightness(1.15) saturate(1.2) sharpen(1)',
-                                maxWidth: '100%',
-                                maxHeight: '100%',
                               }}
                             />
                           )}

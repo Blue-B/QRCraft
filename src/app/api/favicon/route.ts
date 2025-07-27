@@ -44,20 +44,41 @@ export async function GET(request: NextRequest) {
           'Cache-Control': 'public, max-age=3600'
         }
       });
+    } else if (domainUrl.includes('netflix.com')) {
+      // 넷플릭스 고해상도 SVG 로고 직접 생성
+      const netflixSvg = `<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="256" height="256" rx="48" fill="#E50914"/>
+        <path d="M75 60L75 196L95 196L95 120L135 196L155 196L155 60L135 60L135 140L95 60L75 60Z" fill="white"/>
+      </svg>`;
+      
+      return new NextResponse(netflixSvg, {
+        headers: {
+          'Content-Type': 'image/svg+xml',
+          'x-logo-source': 'netflix-svg-hd',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      });
     } else if (domainUrl.includes('google.com')) {
       // Google 고해상도 로고
       faviconUrls = [
-        `https://www.google.com/s2/favicons?domain=google.com&sz=128`,
+        `https://www.google.com/s2/favicons?domain=google.com&sz=256`, // 256x256 고해상도
+        `https://www.google.com/s2/favicons?domain=google.com&sz=128`, // 128x128 중간 해상도
         `https://google.com/favicon.ico`,
       ];
     } else {
-      // 일반 도메인
+      // 일반 도메인 - 고화질 우선 순위로 시도
       faviconUrls = [
-        `https://www.google.com/s2/favicons?domain=${domainUrl}&sz=128`,
-        `https://www.google.com/s2/favicons?domain=${domainUrl}&sz=64`,
-        `https://${domainUrl}/favicon.ico`,
-        `https://${domainUrl}/favicon.png`,
-        `https://${domainUrl}/apple-touch-icon.png`,
+        `https://www.google.com/s2/favicons?domain=${domainUrl}&sz=256`, // 256x256 고해상도
+        `https://www.google.com/s2/favicons?domain=${domainUrl}&sz=128`, // 128x128 중간 해상도
+        `https://${domainUrl}/apple-touch-icon-180x180.png`, // 애플 고해상도 아이콘
+        `https://${domainUrl}/apple-touch-icon-152x152.png`, // 애플 중간 해상도
+        `https://${domainUrl}/apple-touch-icon.png`, // 애플 기본 아이콘
+        `https://${domainUrl}/favicon-96x96.png`, // 96x96 아이콘
+        `https://${domainUrl}/favicon-32x32.png`, // 32x32 아이콘
+        `https://${domainUrl}/favicon.png`, // PNG 파비콘
+        `https://${domainUrl}/favicon.ico`, // 기본 ICO 파비콘
       ];
     }
     
