@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   description: "Create QR codes with website favicons automatically embedded as logos. Download in PNG, JPEG, SVG, and WEBP formats.",
   keywords: "QR code, logo, favicon, generator, download, PNG, JPEG, SVG, WEBP, QRCraft",
   authors: [{ name: "QRCraft" }],
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export const viewport = {

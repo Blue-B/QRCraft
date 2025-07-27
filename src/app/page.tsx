@@ -647,8 +647,10 @@ export default function Home() {
                               fill
                               style={{ 
                                 objectFit: 'contain',
-                                imageRendering: 'crisp-edges',
-                                filter: 'contrast(1.1) brightness(1.05)',
+                                imageRendering: 'auto',
+                                filter: 'contrast(1.2) brightness(1.1) saturate(1.1)',
+                                maxWidth: '100%',
+                                maxHeight: '100%',
                               }}
                             />
                           )}
@@ -680,7 +682,8 @@ export default function Home() {
                             fill
                             style={{ 
                               objectFit: 'cover', // contain에서 cover로 변경하여 원을 꽉 채움
-                              imageRendering: 'crisp-edges',
+                              imageRendering: 'auto',
+                              filter: 'contrast(1.1) brightness(1.05) saturate(1.05)',
                             }}
                           />
                         </div>
