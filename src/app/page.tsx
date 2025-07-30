@@ -28,8 +28,8 @@ export default function Home() {
   const [generatedUrl, setGeneratedUrl] = useState('');
   const [trackingUrl] = useState('');
   const [isTrackingMode] = useState(false);
-  const [logoSize, setLogoSize] = useState(0.5); // 로고 크기 상태 추가
-  const [showDonationPopup, setShowDonationPopup] = useState(false); // 후원 팝업 상태 추가
+  const [logoSize, setLogoSize] = useState(0.5); // Logo size state (로고 크기 상태)
+  const [showDonationPopup, setShowDonationPopup] = useState(false); // Donation popup state (후원 팝업 상태)
   const [qrUsage, setQrUsage] = useState({ 
     free: 0, 
     premium: 0, 
@@ -45,9 +45,9 @@ export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const downloadMenuRef = useRef<HTMLDivElement>(null);
 
-  // 프리미엄 상태 로드
+  // Load premium status (프리미엄 상태 로드)
   React.useEffect(() => {
-    // QR 사용량 로드
+    // Load QR usage (QR 사용량 로드)
     const savedQrUsage = localStorage.getItem('qr_usage');
     if (savedQrUsage) {
       setQrUsage(JSON.parse(savedQrUsage));
@@ -55,25 +55,25 @@ export default function Home() {
   }, []);
 
 
-  // URL 제출 처리
+  // Handle URL submission (URL 제출 처리)
   const handleUrlSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (url.trim()) {
       fetchFavicon(url.trim());
       setIsQrGenerated(true);
       setGeneratedUrl(url.trim());
-      incrementQrUsage(); // QR 생성 횟수 증가
+      incrementQrUsage(); // Increment QR generation count (QR 생성 횟수 증가)
       
-      // QR 생성 후 후원 팝업 표시 (더 빠르게)
+      // Show donation popup after QR generation (faster) (QR 생성 후 후원 팝업 표시 - 더 빠르게)
       if (Math.random() < 0.8) {
         setTimeout(() => {
           setShowDonationPopup(true);
-        }, 500); // 0.5초로 단축
+        }, 500); // Shortened to 0.5 seconds (0.5초로 단축)
       }
     }
   };
 
-  // 파비콘 가져오기
+  // Fetch favicon (파비콘 가져오기)
   const fetchFavicon = async (inputUrl: string) => {
     if (!inputUrl) return;
 
@@ -83,7 +83,7 @@ export default function Home() {
     try {
       const domain = new URL(inputUrl).hostname;
       
-      // 특정 도메인 특별 처리
+      // Special handling for specific domains (특정 도메인 특별 처리)
       if (domain.includes('github.com')) {
         const githubSvg = `
           <svg width="100%" height="100%" viewBox="0 0 24 24" fill="currentColor">
@@ -95,7 +95,7 @@ export default function Home() {
         return;
       }
 
-      // 캐시 무효화를 위한 타임스탬프 추가
+      // Add timestamp for cache invalidation (캐시 무효화를 위한 타임스탬프 추가)
       const response = await fetch(`/api/favicon?domain_url=${domain}&t=${Date.now()}`, {
         cache: 'no-store'
       });
@@ -121,7 +121,7 @@ export default function Home() {
     }
   };
 
-  // 다운로드 처리
+  // Handle download (다운로드 처리)
   const downloadQR = async (format: 'png' | 'jpeg' | 'svg' | 'webp') => {
     if (!qrRef.current) return;
 
@@ -172,13 +172,13 @@ export default function Home() {
 
 
 
-  // 커스텀 로고 업로드
+  // Custom logo upload (커스텀 로고 업로드)
   const handleCustomLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      alert('이미지 파일을 선택해주세요.');
+      alert('Please select an image file.');
       return;
     }
 
@@ -188,17 +188,17 @@ export default function Home() {
       setCustomLogo(result);
       setFavicon({ data: '', isSvg: false, isLoaded: false, error: false });
       
-      // 로고 크기 자동 조정
+      // Automatic logo size adjustment (로고 크기 자동 조정)
       const img = new window.Image();
       img.onload = () => {
         const aspectRatio = img.width / img.height;
-        // 가로가 긴 로고는 더 작게, 세로가 긴 로고는 더 크게
+        // Wide logos smaller, tall logos larger (가로가 긴 로고는 더 작게, 세로가 긴 로고는 더 크게)
         if (aspectRatio > 1.5) {
-          setLogoSize(0.4); // 가로가 긴 로고
+          setLogoSize(0.4); // Wide logo (가로가 긴 로고)
         } else if (aspectRatio < 0.7) {
-          setLogoSize(0.6); // 세로가 긴 로고
+          setLogoSize(0.6); // Tall logo (세로가 긴 로고)
         } else {
-          setLogoSize(0.5); // 정사각형 로고
+          setLogoSize(0.5); // Square logo (정사각형 로고)
         }
       };
       img.src = result;
@@ -206,7 +206,7 @@ export default function Home() {
     reader.readAsDataURL(file);
   };
 
-  // 커스텀 로고 제거
+  // Remove custom logo (커스텀 로고 제거)
   const removeCustomLogo = () => {
     setCustomLogo(null);
     if (fileInputRef.current) {
@@ -214,7 +214,7 @@ export default function Home() {
     }
   };
 
-  // 배경색 변경
+  // Change background color (배경색 변경)
   const handleBackgroundChange = (newBackgroundColor: string) => {
     setBackgroundColor(newBackgroundColor);
     if (newBackgroundColor === '#000000') {
@@ -224,13 +224,13 @@ export default function Home() {
     }
   };
 
-  // 색상 초기화
+  // Reset colors (색상 초기화)
   const resetColors = () => {
     setQrColor('#000000');
     setBackgroundColor('#FFFFFF');
   };
 
-  // 다운로드 메뉴 외부 클릭 시 닫기
+  // Close download menu when clicking outside (다운로드 메뉴 외부 클릭 시 닫기)
   const handleClickOutside = (event: MouseEvent) => {
     if (downloadMenuRef.current && !downloadMenuRef.current.contains(event.target as Node)) {
       setShowDownloadMenu(false);
@@ -245,32 +245,32 @@ export default function Home() {
   }, []);
 
 
-  // QR 생성 횟수 증가
+  // Increment QR generation count (QR 생성 횟수 증가)
   const incrementQrUsage = () => {
     const newUsage = { ...qrUsage };
-    newUsage.free += 1; // 무료 사용자로 카운트
+    newUsage.free += 1; // Count as free user (무료 사용자로 카운트)
     setQrUsage(newUsage);
     localStorage.setItem('qr_usage', JSON.stringify(newUsage));
   };
 
 
 
-  // 후원하기 링크
+  // Donation link (후원하기 링크)
   const handleDonation = () => {
-    // Buy Me a Coffee 링크
+    // Buy Me a Coffee link (Buy Me a Coffee 링크)
     const donationUrl = process.env.NEXT_PUBLIC_DONATION_URL || 'https://buymeacoffee.com/beckycode7h';
     window.open(donationUrl, '_blank');
     setShowDonationPopup(false);
   };
 
-  // 후원 팝업 닫기
+  // Close donation popup (후원 팝업 닫기)
   const closeDonationPopup = () => {
     setShowDonationPopup(false);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* 상단바 */}
+      {/* Top bar (상단바) */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
@@ -280,24 +280,24 @@ export default function Home() {
                 QRCraft
               </h1>
               
-              {/* 프리미엄 상태 표시 제거 - 모든 기능 무료 */}
+              {/* Remove premium status display - all features free (프리미엄 상태 표시 제거 - 모든 기능 무료) */}
             </div>
             
             <div className="flex items-center gap-3">
-              {/* 프리미엄 관련 버튼 제거 */}
+              {/* Remove premium-related buttons (프리미엄 관련 버튼 제거) */}
             </div>
           </div>
         </div>
       </div>
 
-      {/* 후원 팝업 */}
+      {/* Donation popup (후원 팝업) */}
       {showDonationPopup && (
         <div 
           className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm"
           style={{ backgroundColor: 'rgba(0, 0, 0, 0.08)' }}
         >
           <div className="bg-white rounded-2xl shadow-2xl max-w-md mx-4 p-6 relative border border-gray-200">
-            {/* 닫기 버튼 */}
+            {/* Close button (닫기 버튼) */}
             <button
               type="button"
               onClick={closeDonationPopup}
@@ -307,7 +307,7 @@ export default function Home() {
             </button>
             
             <div className="text-center">
-              {/* 이모지 아이콘 */}
+              {/* Emoji icon (이모지 아이콘) */}
               <div className="text-5xl mb-4 animate-bounce">☕</div>
               
               <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -332,7 +332,7 @@ export default function Home() {
                   onClick={closeDonationPopup}
                   className="w-full px-6 py-3 text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition rounded-lg border border-gray-200 hover:border-gray-300"
                 >
-                  나중에 하기
+                  Maybe Later
                 </button>
               </div>
               
@@ -346,17 +346,17 @@ export default function Home() {
 
       <div className="py-8 px-4">
         <div className="max-w-4xl mx-auto">
-          {/* 상단 광고 배너 제거 */}
+          {/* Remove top ad banner (상단 광고 배너 제거) */}
           
-          {/* 중복된 제목 섹션 제거 */}
+          {/* Remove duplicate title section (중복된 제목 섹션 제거) */}
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* 설정 섹션 */}
+              {/* Settings section (설정 섹션) */}
               <div>
                 <h2 className="text-xl font-semibold text-gray-800 mb-6">Settings</h2>
 
-                {/* URL 입력 */}
+                {/* URL input (URL 입력) */}
                 <form onSubmit={handleUrlSubmit} className="mb-6">
                   <div className="mb-4">
                     <label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-2">Website URL</label>
@@ -391,10 +391,7 @@ export default function Home() {
                     )}
                   </button>
                 </form>
-
-                {/* 중간 광고 배너 제거 */}
-
-                {/* 색상 설정 */}
+                {/* Color settings (색상 설정) */}
                 <div className="mb-6">
                   <h3 className="text-sm font-medium text-gray-700 mb-3">Colors</h3>
                   <div className="grid grid-cols-2 gap-3 mb-3">
@@ -428,7 +425,7 @@ export default function Home() {
                   </button>
                 </div>
 
-                {/* 커스텀 로고 */}
+                {/* Custom logo (커스텀 로고) */}
                 <div className="mb-6">
                   <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Logo</h3>
                   <div className="space-y-3">
@@ -477,7 +474,7 @@ export default function Home() {
                           </button>
                         </div>
                         
-                        {/* 로고 크기 조정 */}
+                        {/* Logo size adjustment (로고 크기 조정) */}
                         <div className="space-y-2">
                           <label className="block text-xs text-gray-600">Logo Size</label>
                           <div className="flex items-center gap-3">
@@ -504,7 +501,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* 다운로드 버튼 */}
+                {/* Download button (다운로드 버튼) */}
                 <div className="relative" ref={downloadMenuRef}>
                   <button 
                     onClick={() => setShowDownloadMenu(!showDownloadMenu)}
@@ -581,11 +578,9 @@ export default function Home() {
                     </div>
                   )}
                 </div>
-
-                {/* 프리미엄 안내 제거 - 모든 기능 무료 */}
               </div>
 
-              {/* QR 코드 미리보기 */}
+              {/* QR code preview (QR 코드 미리보기) */}
               <div className="flex items-center justify-center">
                 {isQrGenerated && (isTrackingMode ? trackingUrl : generatedUrl) ? (
                   <div className="relative">
@@ -607,7 +602,7 @@ export default function Home() {
                       />
                       {isTrackingMode && (
                         <div className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
-                          추적
+                          Tracked
                         </div>
                       )}
                       {(favicon.isLoaded && favicon.data && !favicon.error) && (
@@ -624,15 +619,15 @@ export default function Home() {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            padding: '16px', // 파비콘은 여백을 두고 깔끔하게
+                            padding: '16px', // Clean padding for favicon (파비콘은 여백을 두고 깔끔하게)
                             boxShadow: '0 4px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)',
-                            border: '2px solid rgba(0,0,0,0.08)', // 테두리 조정
+                            border: '2px solid rgba(0,0,0,0.08)', // Border adjustment (테두리 조정)
                           }}
                         >
                           {favicon.isSvg ? (
                             <div
                               style={{ 
-                                width: '70%', // 파비콘 SVG는 70%로 제한
+                                width: '70%', // Favicon SVG limited to 70% (파비콘 SVG는 70%로 제한)
                                 height: '70%',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -645,7 +640,7 @@ export default function Home() {
                             <Image
                               src={favicon.data}
                               alt="Logo"
-                              width={Math.round(256 * logoSize * 0.6)} // 파비콘 이미지는 60%로 제한
+                              width={Math.round(256 * logoSize * 0.6)} // Favicon image limited to 60% (파비콘 이미지는 60%로 제한)
                               height={Math.round(256 * logoSize * 0.6)}
                               unoptimized
                               style={{ 
@@ -671,10 +666,10 @@ export default function Home() {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            padding: '0px', // 패딩 완전 제거
+                            padding: '0px', // Remove padding completely (패딩 완전 제거)
                             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                            border: '2px solid rgba(0,0,0,0.05)', // 테두리 추가
-                            overflow: 'hidden', // 이미지가 원 밖으로 나가지 않도록
+                            border: '2px solid rgba(0,0,0,0.05)', // Add border (테두리 추가)
+                            overflow: 'hidden', // Prevent image from going outside circle (이미지가 원 밖으로 나가지 않도록)
                           }}
                         >
                           <Image
@@ -682,7 +677,7 @@ export default function Home() {
                             alt="Custom Logo"
                             fill
                             style={{ 
-                              objectFit: 'cover', // contain에서 cover로 변경하여 원을 꽉 채움
+                              objectFit: 'cover', // Changed from contain to cover to fill the circle (contain에서 cover로 변경하여 원을 꽉 채움)
                               imageRendering: 'auto',
                               filter: 'contrast(1.1) brightness(1.05) saturate(1.05)',
                             }}
@@ -707,8 +702,6 @@ export default function Home() {
               </div>
             )}
           </div>
-          
-          {/* 하단 광고 배너 제거 - 수익화 효과 낮음 */}
         </div>
       </div>
     </div>
