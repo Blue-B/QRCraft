@@ -28,7 +28,7 @@ export default function Home() {
   const [generatedUrl, setGeneratedUrl] = useState('');
   const [trackingUrl] = useState('');
   const [isTrackingMode] = useState(false);
-  const [logoSize, setLogoSize] = useState(0.5); // Logo size state (로고 크기 상태)
+  const [logoSize, setLogoSize] = useState(0.2); // Logo size state (로고 크기 상태)
   const [showDonationPopup, setShowDonationPopup] = useState(false); // Donation popup state (후원 팝업 상태)
   const [qrUsage, setQrUsage] = useState({ 
     free: 0, 
@@ -194,11 +194,11 @@ export default function Home() {
         const aspectRatio = img.width / img.height;
         // Wide logos smaller, tall logos larger (가로가 긴 로고는 더 작게, 세로가 긴 로고는 더 크게)
         if (aspectRatio > 1.5) {
-          setLogoSize(0.4); // Wide logo (가로가 긴 로고)
+          setLogoSize(0.15); // Wide logo (가로가 긴 로고)
         } else if (aspectRatio < 0.7) {
-          setLogoSize(0.6); // Tall logo (세로가 긴 로고)
+          setLogoSize(0.25); // Tall logo (세로가 긴 로고)
         } else {
-          setLogoSize(0.5); // Square logo (정사각형 로고)
+          setLogoSize(0.2); // Square logo (정사각형 로고)
         }
       };
       img.src = result;
@@ -480,8 +480,8 @@ export default function Home() {
                           <div className="flex items-center gap-3">
                             <input
                               type="range"
-                              min="0.3"
-                              max="0.7"
+                              min="0.15"
+                              max="0.3"
                               step="0.05"
                               value={logoSize}
                               onChange={(e) => setLogoSize(parseFloat(e.target.value))}
@@ -597,7 +597,7 @@ export default function Home() {
                         size={256}
                         fgColor={qrColor}
                         bgColor={backgroundColor}
-                        level={"H"}
+                        level={"M"}
                         includeMargin={false}
                       />
                       {isTrackingMode && (
@@ -612,8 +612,8 @@ export default function Home() {
                             top: '50%',
                             left: '50%',
                             transform: 'translate(-50%, -50%)',
-                            width: 256 * logoSize, // 로고 크기에 따라 조정
-                            height: 256 * logoSize, // 로고 크기에 따라 조정
+                            width: Math.min(256 * logoSize, 60), // 로고 크기 최대 60px로 제한
+                            height: Math.min(256 * logoSize, 60), // 로고 크기 최대 60px로 제한
                             background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
                             borderRadius: '50%',
                             display: 'flex',
@@ -640,8 +640,8 @@ export default function Home() {
                             <Image
                               src={favicon.data}
                               alt="Logo"
-                              width={Math.round(256 * logoSize * 0.6)} // Favicon image limited to 60% (파비콘 이미지는 60%로 제한)
-                              height={Math.round(256 * logoSize * 0.6)}
+                              width={Math.round(Math.min(256 * logoSize, 60) * 0.6)} // Favicon image limited to 60% (파비콘 이미지는 60%로 제한)
+                              height={Math.round(Math.min(256 * logoSize, 60) * 0.6)}
                               unoptimized
                               style={{ 
                                 objectFit: 'contain',
@@ -659,8 +659,8 @@ export default function Home() {
                             top: '50%',
                             left: '50%',
                             transform: 'translate(-50%, -50%)',
-                            width: 256 * logoSize, // 로고 크기에 따라 조정
-                            height: 256 * logoSize, // 로고 크기에 따라 조정
+                            width: Math.min(256 * logoSize, 60), // 로고 크기 최대 60px로 제한
+                            height: Math.min(256 * logoSize, 60), // 로고 크기 최대 60px로 제한
                             background: 'white',
                             borderRadius: '50%',
                             display: 'flex',
