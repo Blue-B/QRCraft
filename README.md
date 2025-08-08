@@ -22,7 +22,8 @@ QRCraft automatically fetches website favicons and embeds them as logos in the c
 
 ## Demo
 
-![QRCraft Demo](./demo.png)
+<img width="1164" height="845" alt="image" src="https://github.com/user-attachments/assets/5e1fa838-b29d-441f-a61f-85b08e4eea75" />
+
 
 **Try it live: [https://qrft.vercel.app]**
 
